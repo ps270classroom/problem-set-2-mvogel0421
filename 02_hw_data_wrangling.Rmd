@@ -78,6 +78,9 @@ In the writeup, describe which type of candidate sponsored the most promoting ad
 ## Answer 2
 
 ```{r eval = FALSE}
+library(dplyr)
+library(knitr)
+library(readr)
 filtration <- fb_ads |>
   filter(office %in% c("US House", "US Senate"))
 filtration
@@ -107,7 +110,29 @@ Create a histogram of this variable for just the US House races. Save the ggplot
 
 ## Answer 3
 
+```{r}
+library(dplyr)
+library(ggplot2)
+fb_ads <- fb_ads |>
+  mutate(impressions_millions = impressions / 100000)
+fb_ads
 
+house_races <- fb_ads |>
+  filter(office == "US House")
+house_races
+
+plot_q3 <- ggplot(house_races, aes(x = impressions_millions)) +
+  geom_histogram(binwidth = 1, fill = "blue", color = "black") +
+  labs(title = "Distribution of Facebook Ad Impressions for US House Races",
+       x = "Ad Impressions (in Millions)",
+       y = "Count")
+plot_q3
+
+print(plot_q3)
+
+```
+
+## Most of the members of the House had under 10 million ad impressions. The result of this data being made into a histogram is therefore one where most House members fall close to the left-most end of the y-axis.
 
 \newpage
 
