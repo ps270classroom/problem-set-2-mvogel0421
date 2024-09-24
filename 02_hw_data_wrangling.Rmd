@@ -85,7 +85,8 @@ filtration <- fb_ads |>
   filter(office %in% c("US House", "US Senate"))
 filtration
 
-party_incumbent_promote <- filtration |>
+party_incumbent_promote <- 
+  filtration |>
   group_by(party, incumbency) |>
   summarize(promote_prop = mean(ad_tone_promote, na.rm = TRUE)) |>
   ungroup()
@@ -155,6 +156,29 @@ You do not need to exactly match the labels, but you should have informative lab
 
 ## Answer 4
 
+```{r}
+library(dplyr)
+library(ggplot2)
+top_15_house <- fb_ads |>
+  filter(office == "US House") |>
+  arrange(desc(impressions_millions)) |>
+  slice_max(order_by = impressions_millions, n = 15)
+top_15_house
+
+top_15_house <-
+  top_15_house |>
+  mutate(cand_name_last = factor(cand_name_last, levels = top_15_house$cand_name_last[order(top_15_house$impressions_millions)]))
+
+fb_top_plot <- ggplot(top_15_house, aes(x = impressions_millions, y = cand_name_last, fill = party)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Top 15 US House Candidates by Facebook Ad Impressions",
+       x = "Ad Impressions (Millions)",
+       y = "Candidate Last Name") +
+  scale_fill_manual(values = c(R = "red", D = "blue")) +
+  theme_minimal()
+
+fb_top_plot
+```
 
 
 \newpage
