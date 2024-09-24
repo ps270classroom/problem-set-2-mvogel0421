@@ -78,29 +78,21 @@ In the writeup, describe which type of candidate sponsored the most promoting ad
 ## Answer 2
 
 ```{r eval = FALSE}
+filtration <- fb_ads |>
+  filter(office %in% c("US House", "US Senate"))
+filtration
+
 party_incumbent_promote <- filtration |>
   group_by(party, incumbency) |>
   summarize(promote_prop = mean(ad_tone_promote, na.rm = TRUE)) |>
   ungroup()
 party_incumbent_promote
 
-filtration <- fb_ads |>
-  filter(office %in% c("US House", "US Senate"))
-filtration
-
-
-
 knitr::kable(party_incumbent_promote
              , col.names = c("Party", "Incumbency Status", "Promote Proportion"), 
              digits = 3)
-
-
-highest_promo_rate <- party_incumbent_promote |>
-  filter(promote_prop == max(promote_prop))
-highest_promo_rate
-
-print(highest_promo_rate)
 ```
+## Democratic Incumbents promoted the most ads, on average.
 
 \newpage
 
