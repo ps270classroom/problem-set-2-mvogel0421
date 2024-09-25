@@ -52,10 +52,12 @@ library(knitr)
 fb_ads <-
   read_csv("data/fb_ads.csv")
 fb_ads
+
 incumbency_table <- fb_ads|>
   group_by(incumbency) |>
-  count() |>
-  ungroup()
+  count()
+incumbency_table
+
 knitr::kable(incumbency_table)
 ```
 
@@ -88,8 +90,7 @@ filtration
 party_incumbent_promote <- 
   filtration |>
   group_by(party, incumbency) |>
-  summarize(promote_prop = mean(ad_tone_promote, na.rm = TRUE)) |>
-  ungroup()
+  summarize(promote_prop = mean(ad_tone_promote, na.rm = TRUE))
 party_incumbent_promote
 
 knitr::kable(party_incumbent_promote
@@ -115,7 +116,7 @@ Create a histogram of this variable for just the US House races. Save the ggplot
 library(dplyr)
 library(ggplot2)
 fb_ads <- fb_ads |>
-  mutate(impressions_millions = impressions / 100000)
+  mutate(impressions_millions = impressions / 1000000)
 fb_ads
 
 house_races <- fb_ads |>
@@ -128,8 +129,6 @@ plot_q3 <- ggplot(house_races, aes(x = impressions_millions)) +
        x = "Ad Impressions (in Millions)",
        y = "Count")
 plot_q3
-
-print(plot_q3)
 
 ```
 
